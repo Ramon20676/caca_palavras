@@ -103,7 +103,7 @@ def salvar_docx(matriz, palavras, coordenadas):
     section = doc.sections[-1]
     footer = section.footer
     footer_paragraph = footer.paragraphs[0]
-    footer_paragraph.text = "Gerado por [Seu Nome ou App]"
+    footer_paragraph.text = "Gerador criado por [Ramon Costa]"
     footer_paragraph.style = style
 
     buffer = BytesIO()
