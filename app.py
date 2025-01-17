@@ -98,8 +98,7 @@ if gerar:
         matriz, coordenadas = gerar_caca_palavras(palavras)
 
         st.subheader("Caça-Palavras Gerado:")
-        for linha in matriz:
-            st.text(" ".join(linha))
+        st.code("\\n".join([" ".join(linha) for linha in matriz]), language="plaintext")
 
         docx_file = salvar_docx(matriz, palavras)
         st.download_button(
