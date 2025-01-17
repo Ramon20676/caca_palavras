@@ -112,6 +112,13 @@ def salvar_docx(matriz, palavras, coordenadas):
     return buffer
 
 # Interface do Streamlit
+
+st.set_page_config(
+    page_title="Gerador de Caça-Palavras",
+    page_icon=None,  # Substitua por um arquivo de ícone, se desejar
+    layout="centered"
+)
+
 st.title("Gerador de Caça-Palavras")
 
 st.write("Adicione palavras para criar seu caça-palavras. Quando terminar, clique em 'Gerar'.")
