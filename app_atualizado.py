@@ -54,9 +54,12 @@ def gerar_caca_palavras(palavras):
                 inserido = True
                 break
         horizontal = not horizontal  # Alternar direção
-
-    # Remover linhas vazias
-    matriz = [linha for linha in matriz if any(c != ' ' for c in linha)]
+  
+    # Preencher linhas vazias com letras aleatórias
+    for i in range(len(matriz)):
+        if all(c == ' ' for c in matriz[i]):
+            for j in range(len(matriz[i])):
+                matriz[i][j] = random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
     # Preencher espaços vazios com letras aleatórias
     for i in range(len(matriz)):
