@@ -55,9 +55,12 @@ def gerar_caca_palavras(palavras):
                 break
         horizontal = not horizontal  # Alternar direção
 
+    # Remover linhas vazias
+    matriz = [linha for linha in matriz if any(c != ' ' for c in linha)]
+
     # Preencher espaços vazios com letras aleatórias
-    for i in range(tamanho):
-        for j in range(tamanho):
+    for i in range(len(matriz)):
+        for j in range(len(matriz[i])):
             if matriz[i][j] == ' ':
                 matriz[i][j] = random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
@@ -118,8 +121,7 @@ if gerar:
         matriz, coordenadas = gerar_caca_palavras(palavras)
 
         st.subheader("Caça-Palavras Gerado:")
-        for linha in matriz:
-            st.text(" ".join(linha))
+        st.code("\n".join([" ".join(linha) for linha in matriz]), language="plaintext")
 
         docx_file = salvar_docx(matriz, palavras, coordenadas)
         st.download_button(
