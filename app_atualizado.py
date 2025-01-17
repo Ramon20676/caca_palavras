@@ -31,17 +31,11 @@ def inserir_palavra(matriz, palavra, linha, coluna, direcao):
         for i, letra in enumerate(palavra):
             matriz[linha + i][coluna] = letra.upper()
 
-def gerar_caca_palavras(palavras):
-    # Configuração do tamanho da matriz
-    maior_palavra = max(len(palavra) for palavra in palavras)
-    tamanho = max(10, maior_palavra + 2, len(palavras) + 2)  # Garante espaço suficiente
-
-    # Criar matriz vazia preenchida com letras aleatórias
+def tentar_encaixar_palavras(tamanho, palavras):
+    # Criar matriz vazia
     matriz = [[' ' for _ in range(tamanho)] for _ in range(tamanho)]
-
-    # Inserir palavras na matriz de forma variada
-    coordenadas_palavras = []  # Para destacar as palavras
-    horizontal = True  # Alternar entre horizontal e vertical
+    coordenadas_palavras = []
+    horizontal = True
     for palavra in palavras:
         inserido = False
         for _ in range(100):  # Tentativas para encontrar posição válida
@@ -53,13 +47,21 @@ def gerar_caca_palavras(palavras):
                 coordenadas_palavras.append((palavra, linha, coluna, direcao))
                 inserido = True
                 break
-        horizontal = not horizontal  # Alternar direção
-  
-    # Preencher linhas vazias com letras aleatórias
-    for i in range(len(matriz)):
-        if all(c == ' ' for c in matriz[i]):
-            for j in range(len(matriz[i])):
-                matriz[i][j] = random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+        if not inserido:
+            return None, None  # Não foi possível encaixar todas as palavras
+        horizontal = not horizontal
+    return matriz, coordenadas_palavras
+
+def gerar_caca_palavras(palavras):
+    # Determinar tamanho inicial baseado na maior palavra e no número de palavras
+    maior_palavra = max(len(palavra) for palavra in palavras)
+    tamanho_inicial = max(maior_palavra, len(palavras))
+
+    # Encontrar o menor tamanho possível
+    for tamanho in range(tamanho_inicial, 50):  # Limite superior para evitar loops infinitos
+        matriz, coordenadas = tentar_encaixar_palavras(tamanho, palavras)
+        if matriz is not None:
+            break
 
     # Preencher espaços vazios com letras aleatórias
     for i in range(len(matriz)):
@@ -67,7 +69,7 @@ def gerar_caca_palavras(palavras):
             if matriz[i][j] == ' ':
                 matriz[i][j] = random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
-    return matriz, coordenadas_palavras
+    return matriz, coordenadas
 
 def salvar_docx(matriz, palavras, coordenadas):
     doc = Document()
